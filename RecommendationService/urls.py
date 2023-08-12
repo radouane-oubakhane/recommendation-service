@@ -18,8 +18,14 @@ from django.contrib import admin
 from django.urls import path, include
 import debug_toolbar
 
+
+admin.site.site_header = "Recommendation Service Admin"
+admin.site.site_title = "Recommendation Service Admin Portal"
+admin.site.index_title = "Welcome to Recommendation Service Portal"
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('API.urls')),
+    path('api/v1/', include('API.urls')),
     path('__debug__/', include(debug_toolbar.urls)),
 ]
