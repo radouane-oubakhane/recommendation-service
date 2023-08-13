@@ -8,6 +8,8 @@ django = "*"
 django-debug-toolbar = "*"
 mysqlclient = "==1.4.6"
 djangorestframework = "*"
+redis = "*"
+celery = "*"
 
 [dev-packages]
 
