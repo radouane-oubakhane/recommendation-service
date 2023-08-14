@@ -40,9 +40,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'Recommendation',
     'Catalog',
-    'API',
     'debug_toolbar',
 ]
+
 
 
 

@@ -26,6 +26,7 @@ admin.site.index_title = "Welcome to Recommendation Service Portal"
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/v1/', include('API.urls')),
+    path('api/v1/recommendations/', include('Catalog.urls')),
+    path('api/v1/generate/', include('Recommendation.urls')),
     path('__debug__/', include(debug_toolbar.urls)),
 ]
