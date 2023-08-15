@@ -10,6 +10,8 @@ mysqlclient = "==1.4.6"
 djangorestframework = "*"
 redis = "*"
 celery = "*"
+joblib = "*"
+numpy = "*"
 
 [dev-packages]
 
