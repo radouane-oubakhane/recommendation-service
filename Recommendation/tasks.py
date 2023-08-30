@@ -22,32 +22,38 @@ Y_mean = collaborative_filter_params['Ymean']
 
 # task for running a machine learning model and make recommendations for a all users and save results in database
 @shared_task
-def run_model():
-    p = np.matmul(X, np.transpose(W)) + b
-    predictions = p + Y_mean
-    # delete all previous recommendations
-    Recommendation.objects.all().delete()
-    # save the new recommendations
-    for i in range(predictions.shape[0]):
-        for j in range(predictions.shape[1]):
-            recommendation = Recommendation(
-                user_id=i + 1, 
-                movie_id=j + 1, 
-                rating=predictions[i][j],
-                timestamp = datetime.datetime.now().timestamp()
-                )
+def generate_recommendations_for_all_users():
+    # p = np.matmul(X, np.transpose(W)) + b
+    # predictions = p + Y_mean
+    # # delete all previous recommendations
+    # Recommendation.objects.all().delete()
+    # # save the new recommendations
+    # for i in range(predictions.shape[0]):
+    #     for j in range(predictions.shape[1]):
+    #         recommendation = Recommendation(
+    #             user_id=i + 1, 
+    #             movie_id=j + 1, 
+    #             rating=predictions[i][j],
+    #             timestamp = datetime.datetime.now().timestamp()
+    #             )
             
-            recommendation.save()
+    #         recommendation.save()
+
+    # print("task finished")
+
+    print("======================================")
+    print("Generate recommendations for all users")
+    print("======================================")
 
 
 # task for running a machine learning model and make recommendations for a specific user and save results in database
 @shared_task
-def run_model_for_user(user_id):
+def generate_recommendations_for_user(user_id):
     print("run_model_for_user")
 
 # task for running a machine learning model and make recommendations for a specific users and save results in database
 @shared_task
-def run_model_for_users(user_ids):
+def generate_recommendations_for_users(user_ids):
     print("run_model_for_users")
 
 

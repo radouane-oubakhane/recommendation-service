@@ -12,6 +12,7 @@ redis = "*"
 celery = "*"
 joblib = "*"
 numpy = "*"
+confluent-kafka = "*"
 
 [dev-packages]
 

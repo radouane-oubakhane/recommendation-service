@@ -17,7 +17,6 @@ def all_recommendations(request):
     return Response(serializer.data)
 
 
-
 # get recommendations for a specific list of users 
 @api_view(['GET'])
 def users_recommendations(request, user_ids):
