@@ -5,6 +5,7 @@ import os
 import datetime
 
 from Catalog.models import Recommendation
+from .producers import ProducerRecommendationsForAllUsersCreated
 
 
 # Determine the absolute path to the joblib file
@@ -23,27 +24,33 @@ Y_mean = collaborative_filter_params['Ymean']
 # task for running a machine learning model and make recommendations for a all users and save results in database
 @shared_task
 def generate_recommendations_for_all_users():
-    # p = np.matmul(X, np.transpose(W)) + b
-    # predictions = p + Y_mean
-    # # delete all previous recommendations
-    # Recommendation.objects.all().delete()
-    # # save the new recommendations
-    # for i in range(predictions.shape[0]):
-    #     for j in range(predictions.shape[1]):
-    #         recommendation = Recommendation(
-    #             user_id=i + 1, 
-    #             movie_id=j + 1, 
-    #             rating=predictions[i][j],
-    #             timestamp = datetime.datetime.now().timestamp()
-    #             )
+    p = np.matmul(X, np.transpose(W)) + b
+    predictions = p + Y_mean
+    # delete all previous recommendations
+    Recommendation.objects.all().delete()
+    # save the new recommendations
+    for i in range(predictions.shape[0]):
+        for j in range(predictions.shape[1]):
+            recommendation = Recommendation(
+                user_id=i + 1, 
+                movie_id=j + 1, 
+                rating=predictions[i][j],
+                timestamp = datetime.datetime.now().timestamp()
+                )
             
-    #         recommendation.save()
+            recommendation.save()
 
-    # print("task finished")
+    print("task finished")
 
     print("======================================")
     print("Generate recommendations for all users")
     print("======================================")
+
+    # Send a message to the Kafka topic
+    producer = ProducerRecommendationsForAllUsersCreated()
+    generated_recommendations = Recommendation.objects.all()
+    producer.produce(list(generated_recommendations))
+
 
 
 # task for running a machine learning model and make recommendations for a specific user and save results in database

@@ -1,19 +1,21 @@
 from uuid import uuid4
+import json
 from confluent_kafka import SerializingProducer
 from confluent_kafka.serialization import StringSerializer
 # from confluent_kafka.schema_registry import SchemaRegistryClient
-from confluent_kafka.schema_registry.json_schema import JSONSerializer
-from .constants import GENERATE_RECOMMENDATIONS_FOR_ALL_USERS_SCHEMA, GENERATE_RECOMMENDATIONS_FOR_ALL_USERS_TOPIC
+# from confluent_kafka.schema_registry.json_schema import JSONSerializer
+from .constants import RECOMMENDATIONS_GENERATED_FOR_ALL_USERS_TOPIC
+from Catalog.serializers import RecommendationSerializer
 
 
 
 class ProducerRecommendationsForAllUsersCreated:
     def __init__(self):
         pass
-
-    def produce(self):
+    # pass recommendations to produce fuction as a parameter
+    def produce(self, generated_recommendations):
         # create JSON serializer
-        json_serializer = JSONSerializer(GENERATE_RECOMMENDATIONS_FOR_ALL_USERS_SCHEMA)
+        # json_serializer = JSONSerializer(GENERATE_RECOMMENDATIONS_FOR_ALL_USERS_SCHEMA)
 
         # create a string serializer
         string_serializer = StringSerializer('utf_8')
@@ -22,7 +24,6 @@ class ProducerRecommendationsForAllUsersCreated:
         producer_conf = {
             'bootstrap.servers': 'localhost:9092',
             'key.serializer': string_serializer,
-            'value.serializer': json_serializer
         }
 
         # create a producer
@@ -33,16 +34,18 @@ class ProducerRecommendationsForAllUsersCreated:
         # schema_registry_client = SchemaRegistryClient(schema_registry_conf)
 
         # create a topic
-        topic = GENERATE_RECOMMENDATIONS_FOR_ALL_USERS_TOPIC
+        topic = RECOMMENDATIONS_GENERATED_FOR_ALL_USERS_TOPIC
 
         # create a key
         key = str(uuid4())
 
-        # create a value
-        value = {}
+        # create a value as recommendations list
+        serializer = RecommendationSerializer(generated_recommendations, many=True)
+
+        json_data = json.dumps(serializer.data)
 
         # produce the message
-        producer.produce(topic=topic, key=key, value=value)
+        producer.produce(topic=topic, key=key, value=json_data.encode('utf-8'))
 
         # flush the producer
         producer.flush()

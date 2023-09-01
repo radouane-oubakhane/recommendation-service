@@ -24,8 +24,10 @@ class ConsumerGenerateRecommendationsForAllUsers:
             'auto.offset.reset': 'earliest'
             }
 
+
+
         # create a consumer
-        consumer = consumer(consumer_conf)
+        consumer = DeserializingConsumer(consumer_conf)
         # subscribe to the topic 'generate_recommendations_for_all_users'
         consumer.subscribe([GENERATE_RECOMMENDATIONS_FOR_ALL_USERS_TOPIC])
         # poll the topic
