@@ -1,6 +1,9 @@
 # Description: Constants for Recommendation app
 
 
+BOOTSTRAP_SERVERS = ['localhost:9092']
+
+
 GENERATE_RECOMMENDATIONS_FOR_ALL_USERS_SCHEMA = """
     {
         "$schema": "http://json-schema.org/draft-07/schema#",

@@ -4,7 +4,7 @@ from confluent_kafka import SerializingProducer
 from confluent_kafka.serialization import StringSerializer
 # from confluent_kafka.schema_registry import SchemaRegistryClient
 # from confluent_kafka.schema_registry.json_schema import JSONSerializer
-from .constants import RECOMMENDATIONS_GENERATED_FOR_ALL_USERS_TOPIC
+from .constants import RECOMMENDATIONS_GENERATED_FOR_ALL_USERS_TOPIC, BOOTSTRAP_SERVERS
 from Catalog.serializers import RecommendationSerializer
 
 
@@ -12,7 +12,7 @@ from Catalog.serializers import RecommendationSerializer
 class ProducerRecommendationsForAllUsersCreated:
     def __init__(self):
         pass
-    # pass recommendations to produce fuction as a parameter
+    # pass recommendations to produce function as a parameter
     def produce(self, generated_recommendations):
         # create JSON serializer
         # json_serializer = JSONSerializer(GENERATE_RECOMMENDATIONS_FOR_ALL_USERS_SCHEMA)
@@ -22,7 +22,7 @@ class ProducerRecommendationsForAllUsersCreated:
 
         # create a producer configuration
         producer_conf = {
-            'bootstrap.servers': 'localhost:9092',
+            'bootstrap.servers': BOOTSTRAP_SERVERS[0],
             'key.serializer': string_serializer,
         }
 
